@@ -43,3 +43,16 @@ class User(db.Model):
 
     def __repr__(self) -> str:
         return f"<User: {self.full_name}>"
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+
+
+class PostTag(db.Model):
+    __tablename__ = 'post_tags'
+
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey('posts.id'), primary_key=True)
+    tag_id: Mapped[int] = mapped_column(Integer, ForeignKey('tags.id'), primary_key=True)
