@@ -1,0 +1,42 @@
+body {
+  font-size: 1rem;
+  background-color: rgb(0, 0, 255, 0.1);
+}
+
+img {
+  max-width: 10rem;
+}
+
+.container {
+  display: flex;
+  padding: 2rem;
+}
+
+.profile {
+  padding: 1rem;
+}
+
+.poster {
+  padding-left: 1rem;
+}
+
+.btn {
+  display: flex;
+}
+
+.btn a {
+  padding: 2rem;
+  color: white;
+  text-decoration: none;
+}
+
+.edit {
+  background-color: rgb(100, 0, 255);
+  padding-right: 1rem;
+  margin: 0.2rem;
+}
+
+.delete {
+  background-color: rgb(255, 0, 100);
+  margin: 0.2rem;
+}

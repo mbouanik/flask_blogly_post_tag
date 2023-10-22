@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %} {{user.first_name}} {{user.last_name}} {% endblock %} {% block content %}
+<div class='container'>
+    <div class='image'>
+        <img src="{{user.image_url}}" />
+    </div>
+    
+    <div class='poster'>
+        <h1>{{ user.full_name }}</h1>
+        <div class='btn'>
+            <div class='edit'>
+                <a href='/users/{{user.id}}/edit' >Edit </a>
+            </div>
+            <div class='delete'>
+                <a href='/users/{{user.id}}/delete' >Delete </a>
+            </div>
+        </div>
+        <h2>Posts</h2>
+
+        {% for post in user.posts %}
+            <li>
+            <a href="/posts/{{post.id}}">{{post.title}} </a>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class='post-btn'>
+            <a href="/users/{{user.id}}/posts/new"> Add New Post</a>
+        </div>
+    </div>
+</div>
+
+<a href='/' > Go back </a>  
+{% endblock %}
