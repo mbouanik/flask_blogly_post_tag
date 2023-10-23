@@ -133,6 +133,11 @@ def show_tag(tag_id):
 @app_routes.route('/tags/<tag_id>/edit', methods=['GET', 'POST'])
 def edit_tag(tag_id):
     tag = db.session.execute(db.select(Tag).where(Tag.id == tag_id)).scalar_one()
+    if request.method == 'POST':
+        tag.name = request.form['name']
+        db.session.add(tag)
+        db.session.commit()
+        return redirect(f'/tags/{tag.id}')
     return render_template('edit_tag.html', tag=tag)
 
 
