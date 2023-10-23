@@ -6,8 +6,10 @@
   <input type="text" name="first_name" value="{{user.first_name}}" />
   <input type="text" name="last_name" value="{{user.last_name}}" />
   <input type="text" name="image_url" value="{{user.image_url}}" />
-  <button class='btn' type="submit">Edit</button>
-</form>
+<div class='btn'>
 
-<a href="/users/{{user.id}}" > Cancel </a>  
+    <button formaction='/users/{{user.id}}' formmethod='get'> Cancel </button>
+    <button class='btn' type="submit">Edit</button>
+    </div>
+</form>
 {% endblock %}

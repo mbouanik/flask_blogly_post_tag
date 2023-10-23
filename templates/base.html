@@ -7,6 +7,11 @@
     <link href="{{url_for('app_routes.static', filename='app.css') }}" rel="stylesheet" />
   </head>
   <body>
+    <nav>
+        <a href="/users">Users</a>
+        <a href="/tags">Tags</a>
+        <a href=""></a>
+    </nav>
     {% block content %} {% endblock %}
   </body>
 </html>
