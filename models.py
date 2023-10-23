@@ -55,6 +55,8 @@ class Tag(db.Model):
 
     posts: Mapped[Relationship] = Relationship('PostTag', backref='tag')
 
+    def __init__(self, **kwargs) -> None:
+        super(Tag, self).__init__(**kwargs)
 
 class PostTag(db.Model):
     __tablename__ = 'post_tags'

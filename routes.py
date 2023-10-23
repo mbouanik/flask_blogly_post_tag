@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request
 from init import db
-from models import Post, User
+from models import Post, Tag, User
 
 app_routes = Blueprint("app_routes", __name__, static_folder='static', static_url_path='/app_routs/stati', template_folder='templates')
 
@@ -108,4 +108,37 @@ def delete_post(post_id):
 
 @app_routes.route('/tags')
 def tag_list():
-    return render_template('tags.html')
+    tags = db.session.execute(db.select(Tag)).scalars()
+    return render_template('tags.html', tags=tags)
+
+
+@app_routes.route('/tags/new', methods=['GET', 'POST'])
+def create_new_tag():
+    if request.method == 'POST':
+        print(request.form['name'])
+        tag = Tag(
+            name = request.form['name']
+        )
+        db.session.add(tag)
+        db.session.commit()
+        return redirect('/tags')
+    return render_template('add_tag.html')
+
+@app_routes.route('/tags/<tag_id>')
+def show_tag(tag_id):
+    tag = db.session.execute(db.select(Tag).where(Tag.id == tag_id)).scalar_one()
+    return render_template('tag.html', tag=tag)
+
+
+@app_routes.route('/tags/<tag_id>/edit', methods=['GET', 'POST'])
+def edit_tag(tag_id):
+    tag = db.session.execute(db.select(Tag).where(Tag.id == tag_id)).scalar_one()
+    return render_template('edit_tag.html', tag=tag)
+
+
+@app_routes.route('/tags/<tag_id>/delete')
+def delete_tag(tag_id):
+    tag = db.session.execute(db.select(Tag).where(Tag.id == tag_id)).scalar_one()
+    db.session.delete(tag)
+    db.session.commit()
+    return redirect('/tags') 

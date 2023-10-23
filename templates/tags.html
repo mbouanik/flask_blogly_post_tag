@@ -5,7 +5,7 @@
 <ul>
    {% for tag in tags %}
     <li>
-        {{ tag }}
+        <a href="/tags/{{tag.id}}">{{ tag.name }}</a>
     </li>
    {% endfor %}
 </ul>
