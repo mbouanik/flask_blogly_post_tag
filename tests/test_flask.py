@@ -1,6 +1,6 @@
 from unittest import TestCase
 from init import create_app, db
-from models import User, Post
+from models import PostTag, User, Post, Tag
 
 
 app = create_app()
@@ -30,6 +30,7 @@ class TestFlaskApp(TestCase):
             )
             db.session.add(post)
             db.session.commit()
+            
             self.client = app.test_client()
             self.user = user
             self.user_id = user.id
@@ -101,6 +102,7 @@ class TestPostView(TestCase):
             )
             db.session.add(post)
             db.session.commit()
+
             self.client = app.test_client()
             self.user = user
             self.user_id = user.id
@@ -157,3 +159,93 @@ class TestPostView(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertNotIn("The Force", html)
         self.assertNotIn("Willpower ", html)
+
+        
+class TestPostnTag(TestCase):
+    def setUp(self) -> None:
+        with app.app_context():
+            user = User(first_name="John", last_name="Doe")
+            db.session.add(user)
+            db.session.commit()
+
+            post = Post(
+                title="The Force",
+                content="Willpower is the key for...",
+                user_id=user.id,
+            )
+            db.session.add(post)
+            db.session.commit()
+
+            tag = Tag(name='jedi')
+            db.session.add(tag)
+            db.session.commit()
+
+            post_tag= PostTag(
+                post_id = post.id,
+                tag_id = tag.id
+            )
+            db.session.add(post_tag)
+            db.session.commit()
+
+            self.client = app.test_client()
+            self.user = user
+            self.user_id = user.id
+            self.post_id = post.id
+            self.tag_id = tag.id
+
+    def tearDown(self) -> None:
+        with app.app_context():
+            db.drop_all()
+            db.create_all()
+
+    def test_tag_list(self):
+        res = self.client.get('/tags')
+        html = res.get_data(as_text=True)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertIn('jedi', html)
+
+    def test_new_tag(self):
+        data = {
+            'name':'the force'
+        }
+        res = self.client.post('/tags/new',data=data, follow_redirects=True)
+        html = res.get_data(as_text=True)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertIn('the force', html)
+
+
+    def test_tag_detail_view(self):
+        res = self.client.get(f'/tags/{self.tag_id}')
+        html = res.get_data(as_text=True)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertIn('The Force', html)
+
+    def test_tag_in_post(self):
+        res = self.client.get(f'/posts/{self.post_id}')
+        html = res.get_data(as_text=True)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertIn('jedi', html)
+        self.assertIn('The Force', html)
+
+    def test_edit_tag(self):
+        data = {
+            'name':'lightsaber'
+        }
+        res = self.client.post(f'/tags/{self.tag_id}/edit', data=data, follow_redirects=True)
+        html = res.get_data(as_text=True)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertIn('lightsaber', html)
+
+        
+    def test_delete_tag(self):
+        res = self.client.get(f'/tags/{self.tag_id}/delete', follow_redirects=True)
+        html = res.get_data(as_text=True)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertNotIn('jedi', html)
+

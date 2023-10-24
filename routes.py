@@ -104,8 +104,6 @@ def edit_post(post_id):
     if request.method == "POST":
         post.title = request.form["title"]
         post.content = request.form["content"]
-        print(f"=========================={request.form.getlist('tags')} ===================")
-        print(post.hashtags)
         post.hashtags= [tag for tag in tags if str(tag.id) in request.form.getlist('tags')]
 
 
