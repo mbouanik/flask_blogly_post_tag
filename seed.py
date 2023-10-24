@@ -1,6 +1,6 @@
 from app import app
 from init import db
-from models import User, Post
+from models import User, Post, Tag, PostTag
 
 with app.app_context():
     db.drop_all()
@@ -64,10 +64,41 @@ Many years of war left the planet inhospitable, forcing the Mandalorians to live
 
 During the Clone Wars, the New Mandalorians were overthrown by the renegade Sith Lord Maul's Shadow Collective, whose forces included the Death Watch, which was formed from the exiled warriors. A new civil war soon erupted between the Mandalore resistance, which had the aid of the Republic, and the forces of the Shadow Collective. The resulting siege by a Mandalorian-Republic joint force ended Maul's rule over the planet. The Republic subsequently appointed Bo-Katan Kryze, the leader of the Mandalore resistance, as Regent of Mandalore. However, Kryze's rule was soon ended by Gar Saxon and his clan, who betrayed Kryze and pledged loyalty to the Republic's successor state, the Galactic Empire. For his loyalty, Saxon was appointed Viceroy and Governor of Mandalore, which was now under Imperial occupation.""",
         user_id = 7
+    ),
+    Post(
+        title='Anakin',
+        content='''Anakin Skywalker was a legendary Force-sensitive human male who was a Jedi Knight of the Galactic Republic and the prophesied Chosen One of the Jedi Order, destined to bring balance to the Force. Also known as "Ani" during his childhood, Skywalker earned the moniker "Hero With No Fear" from his accomplishments in the Clone Wars. His alter ego, Darth Vader, the Dark Lord of the Sith, was created when Skywalker turned to the dark side of the Force, pledging his allegiance to the Sith Lord Darth Sidious at the end of the Republic Era.
+
+A vergence in the Force, Anakin Skywalker was born on the desert planet of Tatooine in the Outer Rim Territories in 41 BBY. He was the son of Shmi Skywalker, a slave who conceived a child without a father. His blood contained over twenty-thousand midi-chlorians, surpassing Grand Master Yoda and all other Jedi in the galaxy. Qui-Gon Jinn, the Jedi Master who discovered Skywalker during the Invasion of Naboo in 32 BBY, theorized that Skywalker was conceived by the midi-chlorians. Following the Battle of Naboo, the Jedi High Council admitted Anakin Skywalker into the Order as the Padawan of Jedi Knight Obi-Wan Kenobi despite feeling that he was too old and emotional to adhere to the Jedi Code. Skywalker remained a Padawan through the beginning of the Clone Wars, instigated by events set in motion by Count Dooku. Although Jedi doctrine prohibited personal relationships, Anakin Skywalker had a secret wife, Senator Padmé Amidala of Naboo. During the early days of the Clone Wars, Skywalker served as a Jedi General in the Grand Army of the Republic, commanding the clone troopers of the elite 501st Legion against the Confederacy of Independent Systems. After receiving his knighthood, Skywalker oversaw the Jedi training of his own apprentice, Ahsoka Tano. By 19 BBY, when Tano walked away from the Jedi Order, Skywalker began to struggle with feelings of failure towards his apprentice and the Order itself.''',
+        user_id=3
     )
+]
+
+tags = [
+    Tag(name='the force'),
+    Tag(name='for mandalore'),
+    Tag(name='jedi'),
+    Tag(name='lightsaber'),
+    Tag(name='house of kryse')
+]
+
+posttag = [
+    PostTag(post_id='1', tag_id='1'),
+    PostTag(post_id='1', tag_id='3'),
+    PostTag(post_id='1', tag_id='4'),
+    PostTag(post_id='2', tag_id='2'),
+    PostTag(post_id='2', tag_id='5'),
+    PostTag(post_id='3', tag_id='1'),
+    PostTag(post_id='3', tag_id='3'),
+    PostTag(post_id='3', tag_id='4'),
+
 ]
 with app.app_context():
     db.session.add_all(users)
     db.session.commit()
     db.session.add_all(posts)
+    db.session.commit()
+    db.session.add_all(tags)
+    db.session.commit()
+    db.session.add_all(posttag)
     db.session.commit()

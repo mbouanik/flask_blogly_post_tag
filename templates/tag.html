@@ -2,8 +2,13 @@
 {% block content %}
 
 <h1> Tag: {{tag.name}}</h1>
-
-
+<ul>
+    {%for post in tag.allposts%}
+    <li>
+        <a href="/posts/{{post.id}}">{{post.title}}</a>
+    </li>
+{% endfor %}
+</ul>
 <div class='btn'>
     <div class='edit'>
         <a href='/tags/{{tag.id}}/edit' >Edit </a>

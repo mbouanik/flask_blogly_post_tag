@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request
 from init import db
-from models import Post, Tag, User
+from models import Post, PostTag, Tag, User
 
 app_routes = Blueprint("app_routes", __name__, static_folder='static', static_url_path='/app_routs/stati', template_folder='templates')
 
@@ -66,6 +66,7 @@ def delete_profile_user(user_id):
 
 @app_routes.route("/users/<user_id>/posts/new", methods=["GET", "POST"])
 def add_new_post(user_id):
+    tags = db.session.execute(db.select(Tag)).scalars()
     if request.method == "POST":
         post = Post(
             title=request.form["title"],
@@ -74,8 +75,20 @@ def add_new_post(user_id):
         )
         db.session.add(post)
         db.session.commit()
+        posttag = []
+        for tag in request.form.getlist('tags'):
+            posttag.append(
+                PostTag(
+                    post_id= post.id,
+                    tag_id= tag
+                )
+            )
+        db.session.add_all(posttag)
+        db.session.commit()
+
+            
         return redirect(f"/users/{user_id}")
-    return render_template("add_new_post.html", user_id=user_id)
+    return render_template("add_new_post.html", user_id=user_id, tags=tags)
 
 
 @app_routes.route("/posts/<post_id>")
@@ -87,7 +100,8 @@ def show_post(post_id):
 @app_routes.route("/posts/<post_id>/edit", methods=["GET", "POST"])
 def edit_post(post_id):
     post = db.session.execute(db.select(Post).filter_by(id=post_id)).scalar_one()
-
+    tags = db.session.execute(db.select(Tag)).scalars()
+    posttag = db.session.execute(db.select(PostTag).join(Post).where(PostTag.post_id == post.id)).scalars()
     if request.method == "POST":
         post.title = request.form["title"]
         post.content = request.form["content"]
@@ -95,7 +109,7 @@ def edit_post(post_id):
         db.session.add(post)
         db.session.commit()
         return redirect(f"/posts/{post.id}")
-    return render_template("edit_post.html", post=post)
+    return render_template("edit_post.html", post=post, tags=tags, posttag=list(posttag))
 
 
 @app_routes.route("/posts/<post_id>/delete")

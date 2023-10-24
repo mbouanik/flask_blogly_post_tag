@@ -6,6 +6,14 @@
     {{post.content}}
 </div>
 <p>By {{post.user.full_name}}</p>
+<div class='tags'>
+    <span class='tag_name'>Tags: </span>
+    {% for tag in post.hashtag %}
+    <div class='tag'>
+        {{tag.tag.name}}
+    </div>
+    {% endfor %}
+</div>
 <div class='btn'>
     <div class='edit'>
         <a href='/users/{{post.user.id}}' >Cancel </a>
@@ -20,4 +28,4 @@
     </div>
 </div>
 
-{% endblock %}
+    {% endblock %}

@@ -8,6 +8,10 @@ content %}
         </textarea>
     </div>
   <button type="submit">Add</button>
+    {% for tag in tags %}
+    <input type="checkbox" name="tags" value="{{tag.id}}">
+    <label for="{{tag.name}}">{{tag.name}}</label>
+    {% endfor %}
 </form>
 
 {% endblock %}

@@ -13,6 +13,7 @@ button {
   color: white;
   background-color: rgb(100, 0, 255);
   font-size: 1rem;
+  float: center;
 }
 .container {
   display: flex;
@@ -46,4 +47,26 @@ button {
 .delete {
   background-color: rgb(255, 0, 100);
   margin: 0.2rem;
+}
+
+.tags {
+  display: flex;
+}
+
+.tag {
+  background-color: #4169e1;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  border-radius: 0.3rem;
+  margin: 0.2rem;
+  color: white;
+  font-family: italic;
+}
+
+.tag_name {
+  padding-left: 0.1rem;
+  padding-right: 0.1;
+  border-radius: 0.7rem;
+  font-size: 1.2rem;
+  font-weight: bold;
 }

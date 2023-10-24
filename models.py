@@ -18,6 +18,7 @@ class Post(db.Model):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
 
     hashtag: Mapped[Relationship] = Relationship('PostTag', backref='post')
+    hashtags: Mapped[Relationship]  = Relationship('Tag', secondary='post_tags', backref='allposts')
 
     def __init__(self, **kwargs) -> None:
         super(Post, self).__init__(**kwargs)
@@ -57,6 +58,8 @@ class Tag(db.Model):
 
     def __init__(self, **kwargs) -> None:
         super(Tag, self).__init__(**kwargs)
+    def __repr__(self) -> str:
+        return f"<Tag {self.name}>"
 
 class PostTag(db.Model):
     __tablename__ = 'post_tags'
@@ -65,3 +68,5 @@ class PostTag(db.Model):
     tag_id: Mapped[int] = mapped_column(Integer, ForeignKey('tags.id'), primary_key=True)
 
 
+    def __init__(self, **kwargs) -> None:
+        super(PostTag, self).__init__(**kwargs)

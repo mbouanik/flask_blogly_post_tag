@@ -14,8 +14,20 @@
         {{post.content}}
     </textarea>
   </div>
+{% for tag in tags %}
+    <div>
+    {% if tag in post.hashtags %}
+        <input type="checkbox" name="tags" value="{{tag.id}}" checked>
+        <label for="{{tag.name}}">{{tag.name}}</label>
+    {% else %}
+        <input type="checkbox" name="tags" value="{{tag.id}}">
+        <label for="{{tag.name}}">{{tag.name}}</label>
+    {% endif %}
+    </div>
 
+{% endfor %}
     <button formaction='/posts/{{post.id}}' formmethod='get'> Cancel </button>
     <button type="submit">Edit</button>
 </form>
+
 {% endblock %}
