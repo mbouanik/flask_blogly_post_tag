@@ -4,7 +4,6 @@
 <h1>Edit Post</h1>
 
 <div class='btn'>
-
 </div>
 <form action="/posts/{{post.id}}/edit" method="post">
   <input type="text" name="title" value="{{post.title}}" />
@@ -14,6 +13,8 @@
         {{post.content}}
     </textarea>
   </div>
+    {{post.hashtags}}
+
 {% for tag in tags %}
     <div>
     {% if tag in post.hashtags %}

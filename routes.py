@@ -101,15 +101,18 @@ def show_post(post_id):
 def edit_post(post_id):
     post = db.session.execute(db.select(Post).filter_by(id=post_id)).scalar_one()
     tags = db.session.execute(db.select(Tag)).scalars()
-    posttag = db.session.execute(db.select(PostTag).join(Post).where(PostTag.post_id == post.id)).scalars()
     if request.method == "POST":
         post.title = request.form["title"]
         post.content = request.form["content"]
+        print(f"=========================={request.form.getlist('tags')} ===================")
+        print(post.hashtags)
+        post.hashtags= [tag for tag in tags if str(tag.id) in request.form.getlist('tags')]
+
 
         db.session.add(post)
         db.session.commit()
         return redirect(f"/posts/{post.id}")
-    return render_template("edit_post.html", post=post, tags=tags, posttag=list(posttag))
+    return render_template("edit_post.html", post=post, tags=tags)
 
 
 @app_routes.route("/posts/<post_id>/delete")
