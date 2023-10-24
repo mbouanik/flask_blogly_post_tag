@@ -17,7 +17,7 @@ class Post(db.Model):
     created_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False, default=datetime.today())
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
 
-    hashtag: Mapped[Relationship] = Relationship('PostTag', backref='post')
+    hashtag: Mapped[Relationship] = Relationship('PostTag', backref='post', cascade='all, delete')
     hashtags: Mapped[Relationship]  = Relationship('Tag', secondary='post_tags', backref='allposts')
 
     def __init__(self, **kwargs) -> None:
@@ -54,7 +54,7 @@ class Tag(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False, unique=True)
 
-    posts: Mapped[Relationship] = Relationship('PostTag', backref='tag')
+    posts: Mapped[Relationship] = Relationship('PostTag', backref='tag', cascade='all, delete')
 
     def __init__(self, **kwargs) -> None:
         super(Tag, self).__init__(**kwargs)
